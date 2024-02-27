@@ -1,0 +1,18 @@
+---
+azure:
+  service_principal_id: <Azure Service Principal ID>
+  service_principal_secret: <Azure Service Principal Secret>
+  resource_group: "Arc-AWS-Demo"
+  tenant_id: <Azure Tenant ID>
+  subscription_id: <Azure Subscription ID>
+  location: "westus2"
+extensions:
+  ad_ssh_login:
+    name: AADSSHLoginForLinux
+    type: AADSSHLoginForLinux
+    publisher: Microsoft.Azure.ActiveDirectory
+# local: # Uncomment if connectivity is restricted by a proxy
+#   proxy: http://<proxyURL>:<proxyport> # Uncomment if connectivity is restricted by a proxy
+aws:
+  access_key: <AWS Access Key>
+  access_secret: <AWS Access Key Secret>
