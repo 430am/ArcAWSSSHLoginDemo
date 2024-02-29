@@ -13,7 +13,7 @@ resource "aws_instance" "ansible" {
     user        = "fedora"
     private_key = file("~/.ssh/id_rsa")
     agent       = false
-    host        = aws_instance.ansible.public_ip
+    host        = self.public_ip
   }
 
   provisioner "file" {
@@ -28,7 +28,9 @@ resource "aws_instance" "ansible" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo dnf install python3-pip ansible -y",
+      "sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc",
+      "sudo dnf install -y https://packages.microsoft.com/config/rhel/9.0/packages-microsoft-prod.rpm",
+      "sudo dnf install python3-pip ansible azure-cli -y",
       "sudo python3 -m pip install --upgrade setuptools",
       "sudo python3 -m pip install wheel setuptools_rust",
       "sudo python3 -m pip install --upgrade pip",

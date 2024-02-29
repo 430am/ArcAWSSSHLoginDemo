@@ -34,18 +34,6 @@ resource "aws_security_group" "ingress-all" {
     protocol  = "tcp"
   }
 
-  ingress {
-    from_port   = 3389 #  By default, the windows server listens on TCP port 3389 for RDP
-    to_port     = 3389
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 5985 #  By default, this is the WinRM port
-    to_port     = 5986
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   // Terraform removes the default rule
   egress {
     from_port   = 0

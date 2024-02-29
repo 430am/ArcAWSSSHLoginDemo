@@ -1,0 +1,9 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-west-2
+strict_permissions: false
+keyed_groups:
+  - prefix: arch
+    key: 'architecture'
+  - prefix: tag
+    key: tags

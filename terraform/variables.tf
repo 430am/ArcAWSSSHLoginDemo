@@ -1,6 +1,6 @@
 # Declare TF variables
 variable "server_count" {
-  default = 4
+  default = 2
 }
 
 variable "aws_region" {
@@ -8,15 +8,6 @@ variable "aws_region" {
 }
 variable "aws_availabilityzone" {
   default = "us-west-2a"
-}
-
-variable "admin_username" {
-  default = "arcadmin"
-}
-
-variable "admin_password" {
-  default = "arcdemo123!!"
-  sensitive = true
 }
 
 variable "azure_location" {
@@ -28,7 +19,7 @@ variable "hostname" {
 }
 
 variable "azure_resource_group" {
-  default = "Arc-AWS-Demo"
+  default = "rg-Arc-AWS-Demo"
 }
 
 variable "subscription_id" {

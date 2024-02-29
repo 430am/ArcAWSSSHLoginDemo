@@ -1,14 +1,16 @@
 ---
-    - name: Provision Azure Arc connected machine agents on Windows and Linux servers
-      vars_files: 
-        - ./group_vars/all.yml
-      hosts: tag_AppGroup_LinuxFarm:tag_AppGroup_WindowsFarm
-      tasks: 
-    
-        - name: Performing Tasks for Linux
-          include_tasks: ./tasks/linux_arc.yml
-          when: ansible_system =='Linux'
-    
-        - name: Performing Tasks for Windows
-          include_tasks: ./tasks/windows_arc.yml
-          when: ansible_os_family =='Windows'
+- name: Provision Azure Arc connected machine agents and Entra ID auth extension on Linux and Windows servers
+  vars_files:
+    - ./group_vars/all.yml
+  hosts: tag_AppGroup_LinuxFarm
+  tasks:
+    - name: Install Arc Agent and Entra ID extension on Linux machines
+      block:
+        - name: Install Arc Agent on Linux machines
+          ansible.builtin.include_tasks:
+            file: ./tasks/linux_arc.yml
+          when: ansible_system == 'Linux'
+        - name: Install and enable Entra ID extension
+          ansible.builtin.include_tasks:
+            file: ./tasks/enable_entra.yml
+          when: ansible_system == 'Linux'

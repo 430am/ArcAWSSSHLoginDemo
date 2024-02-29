@@ -1,5 +1,4 @@
 ---
     # Variables here are applicable to tag_AppGroup_LinuxFarm host group
-
     ansible_user: "ubuntu"
     private_key_file: "/home/fedora/.ssh/id_rsa"
