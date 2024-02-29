@@ -1,7 +1,7 @@
 ---
 - name: Login to Azure CLI as service principal
-  ansible.builtin.command:
-    'az login --service-principal -u "{{ azure.service_principal_id }}" -p "{{ azure.service_principal_secret }}" --tenant "{{ azure.tenant_id }}"'
+  ansible.builtin.command: >
+    az login --service-principal -u "{{ azure.service_principal_id }}" -p "{{ azure.service_principal_secret }}" --tenant "{{ azure.tenant_id }}"
   register: az_cli_login
   ignore_errors: true
   failed_when: (az_cli_login.rc not in [0, 16])
@@ -9,12 +9,7 @@
 
 - name: Create the default connectivity endpoint on Linux endpoint
   ansible.builtin.command: >
-    "az rest --method put \
-    --uri https://management.azure.com/subscriptions/{{ azure.subscription_id }}\
-    /resourceGroups/{{ azure.resource_group }}\
-    /providers/Microsoft.HybridCompute/machines/{{ ansible_hostname }}\
-    /providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15 \
-    --body '{\"properties\": {\"type\": \"default\"}}'"
+    az rest --method put --uri https://management.azure.com/subscriptions/{{ azure.subscription_id }}/resourceGroups/{{ azure.resource_group }}/providers/Microsoft.HybridCompute/machines/{{ ansible_hostname }}/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15 --body '{\"properties\": {\"type\": \"default\"}}'
   register: arc_default_connection
   ignore_errors: true
   failed_when: (arc_default_connection.rc not in [0, 16])
@@ -22,25 +17,7 @@
 
 - name: Enable functionality on Arc Linux endpoint
   ansible.builtin.command: >
-    "az rest --method put --uri \
-    https://management.azure.com/subscriptions/{{ azure.subscription_id }}\
-    /resourceGroups/{{ azure.resource_group }}\
-    /providers/Microsoft.HybridCompute/machines/{{ ansible_hostname }}\
-    /providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH?api-version=2023-03-15 \
-    --body '{\"properties\": {\"serviceName\": \"SSH\", \"port\": 22}}'"
+    az rest --method put --uri https://management.azure.com/subscriptions/{{ azure.subscription_id }}/resourceGroups/{{ azure.resource_group }}/providers/Microsoft.HybridCompute/machines/{{ ansible_hostname }}/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH?api-version=2023-03-15 --body "{\"properties\": {\"serviceName\": \"SSH\", \"port\": 22}}"
   register: arc_ssh_functional
   changed_when: arc_ssh_functional.rc != 0
   failed_when: ("ERROR" in arc_ssh_functional.stderr)
-
-- name: Enable Entra ID extension on Linux endpoints
-  ansible.builtin.command: >
-    az connectedmachine extension create \
-    --machine-name "{{ ansible_hostname }}" \
-    --resource_group "{{ azure.resource_group }}" \
-    --publisher "{{ ad_ssh_login.linux.publisher}}" \
-    --name "{{ ad_ssh_login.linux.name }}" \
-    --type "{{ ad_ssh_login.linux.type}}" \
-    --location "{{ azure.location }}"
-  register: arc_results
-  changed_when: arc_results.rc != 0
-  failed_when: ("ERROR" in arc_results.stderr)
