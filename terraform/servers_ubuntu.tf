@@ -26,7 +26,8 @@ resource "aws_instance" "ubuntu" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash"
+      "curl -sL https://aka.ms/InstallAzureCLIDeb > /tmp/install_azurecli.sh",
+      "sudo bash /tmp/install_azurecli.sh"
     ]
   }
 }
