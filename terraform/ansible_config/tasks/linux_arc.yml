@@ -44,9 +44,9 @@
   failed_when: (arc_azcmagent_lnx_connect.rc not in [0, 16])
   changed_when: (arc_azcmagent_lnx_connect.rc in [0, 16])
 
-- name: Enable Entra ID extension on Linux endpoints
-  ansible.builtin.command: >
-    az connectedmachine extension create --machine-name "{{ ansible_hostname }}" --resource_group "{{ azure.resource_group }}" --publisher "{{ ad_ssh_login.linux.publisher}}" --name "{{ ad_ssh_login.linux.name }}" --type "{{ ad_ssh_login.linux.type}}" --location "{{ azure.location }}"
-  register: arc_results
-  changed_when: arc_results.rc != 0
-  failed_when: ("ERROR" in arc_results.stderr)
+- name: Install the ConnectedMachine extension on Linux endpoints
+  ansible.builtin.command:
+    az extension add --name connectedmachine
+  register: arc_connectedmachine
+  changed_when: arc_connectedmachine.rc != 0
+  failed_when: ("ERROR" in arc_connectedmachine.stderr)

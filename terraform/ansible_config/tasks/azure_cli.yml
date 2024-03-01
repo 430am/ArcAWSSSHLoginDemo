@@ -1,0 +1,30 @@
+---
+- name: Show facts available on the system
+  ansible.builtin.debug:
+    var: ansible_facts
+
+- block: # Get RHEL/CentOS/Fedora ready for az cli installation
+    - name: Import the APT repo key
+      ansible.builtin.shell:
+        rpm --import https://packages.microsoft.com/keys/microsoft.asc
+    - name: Add the packages-microsoft-com-prod package
+      ansible.builtin.dnf:
+        name: 'https://packages.microsoft.com/config/rhel/9.0/packages-microsoft-prod.rpm'
+        state: present
+  when: ansible_facts['distribution'] == "Fedora"
+
+- block: # Install az cli on Debian/Ubuntu
+    - name: run MS install script
+      ansible.builtin.shell:
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  when: ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Install Azure CLI
+  ansible.builtin.package:
+    name: "azure-cli"
+    state: present
+
+- name: Verify installed version
+  ansible.builtin.shell:
+    az --version
+  register: azureCLIVersion

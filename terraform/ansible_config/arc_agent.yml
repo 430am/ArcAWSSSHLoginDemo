@@ -6,6 +6,10 @@
   tasks:
     - name: Install Arc Agent and Entra ID extension on Linux machines
       block:
+        - name: Install Azure CLI on Linux machines
+          ansible.builtin.include_tasks:
+            file: ./tasks/azure_cli.yml
+          when: ansible_system == 'Linux'
         - name: Install Arc Agent on Linux machines
           ansible.builtin.include_tasks:
             file: ./tasks/linux_arc.yml

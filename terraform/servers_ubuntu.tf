@@ -15,21 +15,6 @@ resource "aws_instance" "ubuntu" {
     Name     = "${local.hostname_ubuntu}-${count.index + 1}"
     AppGroup = "LinuxFarm"
   }
-  
-  connection {
-    user        = "ubuntu"
-    private_key = file("~/.ssh/id_rsa")
-    agent       = false
-    host        = self.public_ip
-  }
-
-
-  provisioner "remote-exec" {
-    inline = [
-      "curl -sL https://aka.ms/InstallAzureCLIDeb > /tmp/install_azurecli.sh",
-      "sudo bash /tmp/install_azurecli.sh"
-    ]
-  }
 }
 
 data "template_file" "user_data" {

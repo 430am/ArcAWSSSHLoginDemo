@@ -28,9 +28,7 @@ resource "aws_instance" "ansible" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc",
-      "sudo dnf install -y https://packages.microsoft.com/config/rhel/9.0/packages-microsoft-prod.rpm",
-      "sudo dnf install python3-pip ansible azure-cli -y",
+      "sudo dnf install python3-pip ansible -y",
       "sudo python3 -m pip install --upgrade setuptools",
       "sudo python3 -m pip install wheel setuptools_rust",
       "sudo python3 -m pip install --upgrade pip",

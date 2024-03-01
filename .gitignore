@@ -4,3 +4,8 @@
 /terraform/terraform.tfstate
 /terraform/.terraform.tfstate.lock.info
 /terraform/terraform.tfstate.backup
+# vscode settings
+/terraform/.vscode/
+.vscode/
+# local variables
+/terraform/localvars.txt

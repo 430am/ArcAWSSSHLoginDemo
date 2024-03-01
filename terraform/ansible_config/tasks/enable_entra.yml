@@ -3,9 +3,14 @@
   ansible.builtin.command: >
     az login --service-principal -u "{{ azure.service_principal_id }}" -p "{{ azure.service_principal_secret }}" --tenant "{{ azure.tenant_id }}"
   register: az_cli_login
-  ignore_errors: true
-  failed_when: (az_cli_login.rc not in [0, 16])
-  changed_when: false
+  changed_when: az_cli_login.rc != 0
+
+- name: Enable Entra ID extension on Linux endpoints
+  ansible.builtin.command: >
+    az connectedmachine extension create --machine-name "{{ instance_id }}" --resource-group "{{ azure.resource_group }}" --publisher "{{ ad_ssh_login.linux.publisher}}" --name "{{ ad_ssh_login.linux.name }}" --type "{{ ad_ssh_login.linux.type}}" --location "{{ azure.location }}"
+  register: arc_results
+  changed_when: arc_results.rc != 0
+  failed_when: ("ERROR" in arc_results.stderr)
 
 - name: Create the default connectivity endpoint on Linux endpoint
   ansible.builtin.command: >

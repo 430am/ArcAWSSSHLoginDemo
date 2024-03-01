@@ -15,6 +15,3 @@ ad_ssh_login:
     name: AADSSHLogin
     type: AADSSHLoginForWindows
     publisher: Microsoft.Azure.ActiveDirectory
-aws:
-  access_key: <AWS Access Key>
-  access_secret: <AWS Access Key Secret>
