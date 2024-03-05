@@ -1,5 +1,5 @@
 ---
-- name: Provision Azure Arc connected machine agents and Entra ID auth extension on Linux and Windows servers
+- name: Provision Azure Arc connected machine agents on Linux servers
   vars_files:
     - ./group_vars/all.yml
   hosts: tag_AppGroup_LinuxFarm
@@ -13,8 +13,4 @@
         - name: Install Arc Agent on Linux machines
           ansible.builtin.include_tasks:
             file: ./tasks/linux_arc.yml
-          when: ansible_system == 'Linux'
-        - name: Install and enable Entra ID extension
-          ansible.builtin.include_tasks:
-            file: ./tasks/enable_entra.yml
           when: ansible_system == 'Linux'

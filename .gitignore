@@ -6,6 +6,6 @@
 /terraform/terraform.tfstate.backup
 # vscode settings
 /terraform/.vscode/
-.vscode/
+/.vscode/
 # local variables
 /terraform/localvars.txt

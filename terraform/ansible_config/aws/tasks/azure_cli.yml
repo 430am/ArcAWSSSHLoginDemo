@@ -5,7 +5,7 @@
 
 - block: # Get RHEL/CentOS/Fedora ready for az cli installation
     - name: Import the APT repo key
-      ansible.builtin.shell:
+      ansible.builtin.command:
         rpm --import https://packages.microsoft.com/keys/microsoft.asc
     - name: Add the packages-microsoft-com-prod package
       ansible.builtin.dnf:
@@ -25,6 +25,6 @@
     state: present
 
 - name: Verify installed version
-  ansible.builtin.shell:
+  ansible.builtin.command:
     az --version
   register: azureCLIVersion
